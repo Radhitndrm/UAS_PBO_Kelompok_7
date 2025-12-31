@@ -20,6 +20,26 @@ class LimbahB3(Limbah):
         super().__init__(id, volume)
         self.__kandungan_kimia = kandungan_kimia
 
+    def get_kandungan_kimia(self) -> str:
+        """
+        Mengambil kandungan kimia limbah B3.
+
+        Returns:
+            str: Jenis kandungan kimia.
+        """
+        return self.__kandungan_kimia
+
+    def __str__(self) -> str:
+        """
+        Representasi string dari objek LimbahB3 untuk output yang dapat dibaca manusia.
+
+        Returns:
+            str: Deskripsi limbah B3 dalam format yang mudah dibaca.
+        """
+        return (f"LimbahB3(ID: {self.get_id()}, Volume: {self.get_volume()} kg, "
+                f"Status: {self.get_status()}, Kandungan Kimia: {self.__kandungan_kimia}, "
+                f"Risiko: {self.hitung_risiko():.2f})")
+
     def hitung_risiko(self) -> float:
         """
         Menghitung risiko limbah B3.

@@ -20,6 +20,26 @@ class LimbahOrganik(Limbah):
         super().__init__(id, volume)
         self.__tingkat_pembusukan = tingkat_pembusukan
 
+    def get_tingkat_pembusukan(self) -> int:
+        """
+        Mengambil tingkat pembusukan limbah organik.
+
+        Returns:
+            int: Tingkat pembusukan.
+        """
+        return self.__tingkat_pembusukan
+
+    def __str__(self) -> str:
+        """
+        Representasi string dari objek LimbahOrganik untuk output yang dapat dibaca manusia.
+
+        Returns:
+            str: Deskripsi limbah organik dalam format yang mudah dibaca.
+        """
+        return (f"LimbahOrganik(ID: {self.get_id()}, Volume: {self.get_volume()} kg, "
+                f"Status: {self.get_status()}, Tingkat Pembusukan: {self.__tingkat_pembusukan}, "
+                f"Risiko: {self.hitung_risiko():.2f})")
+
     def hitung_risiko(self) -> float:
         """
         Menghitung risiko limbah organik.

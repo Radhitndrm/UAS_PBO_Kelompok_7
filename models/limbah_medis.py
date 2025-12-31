@@ -20,6 +20,26 @@ class LimbahMedis(Limbah):
         super().__init__(id, volume)
         self.__tingkat_infeksi = tingkat_infeksi
 
+    def get_tingkat_infeksi(self) -> int:
+        """
+        Mengambil tingkat infeksi limbah medis.
+
+        Returns:
+            int: Tingkat infeksi.
+        """
+        return self.__tingkat_infeksi
+
+    def __str__(self) -> str:
+        """
+        Representasi string dari objek LimbahMedis untuk output yang dapat dibaca manusia.
+
+        Returns:
+            str: Deskripsi limbah medis dalam format yang mudah dibaca.
+        """
+        return (f"LimbahMedis(ID: {self.get_id()}, Volume: {self.get_volume()} kg, "
+                f"Status: {self.get_status()}, Tingkat Infeksi: {self.__tingkat_infeksi}, "
+                f"Risiko: {self.hitung_risiko():.2f})")
+
     def hitung_risiko(self) -> float:
         """
         Menghitung risiko limbah medis berdasarkan tingkat infeksi.

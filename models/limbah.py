@@ -78,6 +78,15 @@ class Limbah(ABC):
 
     volume = property(get_volume, set_volume)
 
+    def __str__(self) -> str:
+        """
+        Representasi string dari objek Limbah untuk output yang dapat dibaca manusia.
+
+        Returns:
+            str: Deskripsi limbah dalam format yang mudah dibaca.
+        """
+        return f"{self.__class__.__name__}(ID: {self.__id}, Volume: {self.__volume} kg, Status: {self.__status})"
+
     @abstractmethod
     def hitung_risiko(self) -> float:
         """

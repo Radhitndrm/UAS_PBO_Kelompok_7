@@ -7,13 +7,14 @@ from models.limbah_b3 import LimbahB3
 from models.limbah_medis import LimbahMedis
 from models.limbah_organik import LimbahOrganik
 from repositories.limbah_repository import LimbahRepository
+from utils.validator import validate_volume
 
 logger = logging.getLogger(__name__)
 
 class LimbahService:
     """
     Service untuk proses bisnis Limbah.
-    
+
     Mengelola alur utama terkait limbah, seperti:
     - registrasi limbah berdasarkan jenisnya
     - validasi input sebelum membuat objek limbah
@@ -47,20 +48,24 @@ class LimbahService:
 
     def __validate_volume(self, volume: float) -> None:
         """
-        Validasi volume limbah.
+        Validasi volume limbah menggunakan utility validator.
 
         Args:
             volume (float): Volume limbah.
 
         Raises:
-            ValueError: Jika volume bukan angka atau <= 0.
+            ValueError: Jika volume bukan angka atau < 0.
         """
         if not isinstance(volume, (int, float)):
             logger.error("Validasi gagal: volume harus angka, dapat: %r", type(volume))
             raise ValueError("Volume limbah harus berupa angka")
-        if volume <= 0:
-            logger.error("Validasi gagal: volume <= 0, dapat: %r", volume)
-            raise ValueError("Volume limbah harus lebih dari 0")
+
+        # Gunakan validator dari utils
+        try:
+            validate_volume(volume)
+        except ValueError as e:
+            logger.error("Validasi gagal: %s", str(e))
+            raise
 
     def __validate_tingkat_infeksi(self, tingkat_infeksi: int) -> None:
         """
@@ -210,7 +215,7 @@ class LimbahService:
 
     def cari_limbah_by_id(self, id: str) -> Optional[Limbah]:
         """
-        Mencari limbah berdasarkan id (linear search untuk repository list).
+        Mencari limbah berdasarkan ID menggunakan repository.
 
         Args:
             id (str): ID limbah.
@@ -220,13 +225,14 @@ class LimbahService:
         """
         self.__validate_id(id)
 
-        for item in self.__limbah_repository.get_all():
-            if item.get_id() == id:
-                logger.info("Limbah ditemukan | id=%s ts=%s", id, datetime.now().isoformat())
-                return item
+        limbah = self.__limbah_repository.get_by_id(id)
 
-        logger.warning("Limbah tidak ditemukan | id=%s ts=%s", id, datetime.now().isoformat())
-        return None
+        if limbah:
+            logger.info("Limbah ditemukan | id=%s ts=%s", id, datetime.now().isoformat())
+        else:
+            logger.warning("Limbah tidak ditemukan | id=%s ts=%s", id, datetime.now().isoformat())
+
+        return limbah
 
     def hitung_total_risiko(self) -> float:
         """

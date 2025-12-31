@@ -7,10 +7,10 @@ def validate_volume(volume: float) -> None:
         volume (float): Volume limbah.
 
     Raises:
-        ValueError: Jika volume negatif.
+        ValueError: Jika volume negatif atau nol.
     """
-    if volume < 0:
-        raise ValueError("Volume limbah tidak boleh negatif.")
+    if volume <= 0:
+        raise ValueError("Volume limbah harus lebih dari 0")
 
 
 def validate_status(status: str) -> None:

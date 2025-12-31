@@ -1,5 +1,6 @@
 import logging
 from datetime import datetime
+from typing import Optional
 
 from models.limbah import Limbah
 from repositories.limbah_repository import LimbahRepository
@@ -9,12 +10,12 @@ logger = logging.getLogger(__name__)
 class PengangkutanService:
     """
     Service untuk proses bisnis pengangkutan limbah.
-    
+
     Mengelola alur pengankutan limbah, meliputi:
     - validasi input pengangkutan (ID limbah, kendaraan, tujuan)
     - pengecekan ketersediaan limbah berdasarkan ID
     - perubahan status limbah menjadi "Diangkut" jika memenuhi syarat
-    - pembuatan catatan pengangkutan dengan timestamp untuk keperluan audit/log 
+    - pembuatan catatan pengangkutan dengan timestamp untuk keperluan audit/log
     """
 
     def __init__(self, limbah_repository: LimbahRepository):
@@ -26,7 +27,7 @@ class PengangkutanService:
         """
         self.__limbah_repository = limbah_repository
 
-    def __cari_limbah_by_id(self, id: str) -> Limbah | None:
+    def __cari_limbah_by_id(self, id: str) -> Optional[Limbah]:
         """
         Mencari limbah berdasarkan ID pada repository.
 
@@ -34,7 +35,7 @@ class PengangkutanService:
             id (str): ID limbah.
 
         Returns:
-            Limbah | None: Objek limbah jika ditemukan, jika tidak maka None.
+            Optional[Limbah]: Objek limbah jika ditemukan, jika tidak maka None.
         """
         for item in self.__limbah_repository.get_all():
             if item.get_id() == id:
